@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileConverter.ConsoleApplication", "FileConverter.ConsoleApplication\FileConverter.ConsoleApplication.csproj", "{4AD5CB18-A1D6-45BF-A149-E00BAD931FFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileConverter.ImageConverter", "FileConverter.ImageConverter\FileConverter.ImageConverter.csproj", "{AB381B6E-A982-43BC-8C17-9F3248583DBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileConverter.Foundation", "FileConverter.Foundation\FileConverter.Foundation.csproj", "{27CA1279-4AB5-4DE3-AFE7-B0783CC5963E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AD5CB18-A1D6-45BF-A149-E00BAD931FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD5CB18-A1D6-45BF-A149-E00BAD931FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD5CB18-A1D6-45BF-A149-E00BAD931FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD5CB18-A1D6-45BF-A149-E00BAD931FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB381B6E-A982-43BC-8C17-9F3248583DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB381B6E-A982-43BC-8C17-9F3248583DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB381B6E-A982-43BC-8C17-9F3248583DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB381B6E-A982-43BC-8C17-9F3248583DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CA1279-4AB5-4DE3-AFE7-B0783CC5963E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CA1279-4AB5-4DE3-AFE7-B0783CC5963E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CA1279-4AB5-4DE3-AFE7-B0783CC5963E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CA1279-4AB5-4DE3-AFE7-B0783CC5963E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
