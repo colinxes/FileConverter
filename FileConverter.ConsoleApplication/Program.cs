@@ -1,99 +1,119 @@
 ﻿using System.Diagnostics;
 using FileConverter.Foundation;
 using FileConverter.ImageConverter;
-using ImageMagick;
 
 namespace ImageConverter;
 
 public static class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        Console.Write("Bitte geben Sie den Quellpfad an: ");
-        string? inputFilePath = Console.ReadLine();
-        Console.Write("Bitte geben Sie den Zielpfad an: ");
-        string? targetFilePath = Console.ReadLine();
-        Console.Write("Bitte geben Sie das Quelldateiformat an: ");
-        string? sourceFileEnding = Console.ReadLine()?.ToLower();
-        Console.Write("Bitte geben Sie das Zieldateiformat an: ");
-        string? targetFileEnding = Console.ReadLine()?.ToLower();
+        var provider = new FileConverterProvider();
+        provider.AddImageConverters();
+        Console.Write(Language.Program_Main_Enter_Source_Path);
+        var inputFilePath = Console.ReadLine();
+        Console.Write(Language.Program_Main_Enter_Destination_Path);
+        var targetFilePath = Console.ReadLine();
+        Console.Write(Language.Program_Main_Enter_Source_File_Format);
+        var sourceFileEnding = Console.ReadLine()?.ToLower();
+        Console.Write(Language.Program_Main_Enter_Destination_File_Path);
+        var targetFileEnding = Console.ReadLine()?.ToLower();
         Console.WriteLine();
+        
         ValidateInputFilePath(inputFilePath);
         ValidateTagetFilePath(targetFilePath);
         ValidateSourceFileEnding(sourceFileEnding);
         ValidateTargetFileEnding(targetFileEnding);
-        string errorPath = Path.Combine(inputFilePath!, "ERROR");
+
+        const string errorFolderName = "ERROR";
+        var errorPath = Path.Combine(inputFilePath!, errorFolderName);
 
         try
         {
             int counter = default;
-            IEnumerable<string> sourceFiles = Directory.GetFiles(inputFilePath!, $"*.{sourceFileEnding}").ToList();
-            Console.WriteLine($"Es wurden {sourceFiles.Count()} Dateien für die Dateiendung \"{sourceFileEnding}\" gefunden.");
+            
+            IEnumerable<string> sourceFiles = Directory
+                .GetFiles(inputFilePath!, $"*.{sourceFileEnding}")
+                .ToList();
+            
+            Console.WriteLine(
+                Language.Program_Main_Found_X_Files_For_X_File_Ending, 
+                sourceFiles.Count(), 
+                sourceFileEnding);
 
             if (!sourceFiles.Any())
             {
-                Console.WriteLine("Keine Dateien gefunden!");
+                Console.WriteLine(Language.Program_Main_No_Files_Found);
                 Shutdown();
             }
             
-            FileConverterProvider provider = new FileConverterProvider();
-            IFileConverter converter = provider.ByFileEndings(sourceFileEnding!, targetFileEnding!);
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var converter = provider.ByFileEndings(sourceFileEnding!, targetFileEnding!);
+            var stopwatch = Stopwatch.StartNew();
             
             Parallel.ForEach(sourceFiles, (sourceFile) =>
             {
-                HandleFile(sourceFile, errorPath, targetFilePath!, targetFileEnding!, converter);
-                Interlocked.Increment(ref counter);
+                var isSuccessful = HandleFile(
+                    sourceFile, 
+                    errorPath, 
+                    targetFilePath!,
+                    targetFileEnding!,
+                    converter);
+                
+                if(isSuccessful)
+                    Interlocked.Increment(ref counter);
             });
             
             stopwatch.Stop();
             Console.WriteLine();
-            Console.WriteLine($"Es wurden {sourceFiles.Count()} Dateien abgearbeitet.");
-            Console.WriteLine($"Es wurden {counter} erfolgreich konvertiert.");
-            Console.WriteLine($"Die Konvertierung dauerte {stopwatch.ElapsedMilliseconds}ms.");
+            Console.WriteLine(Language.Program_Main_Converted_X_Files, sourceFiles.Count());
+            Console.WriteLine(Language.Program_Main_Converted_X_Files_Successfully, counter);
+            Console.WriteLine(Language.Program_Main_The_Conversion_Took_X_Milliseconds, stopwatch.ElapsedMilliseconds);
         }
         catch (Exception exception)
         {
-            Console.WriteLine($"Es ist ein Fehler beim Lesen der Dateien aufgetreten: {exception.Message}");
+            Console.WriteLine(Language.Program_Main_Error_While_Reading_File_X, exception.Message);
         }
 
         Shutdown();
     }
 
-    private static void HandleFile(
-        string sourceFile,
+    private static bool HandleFile(
+        string pSourceFile,
         string pErrorPath,
         string pOutputFile,
         string pFileEnding,
         IFileConverter pConverter)
     {
-        string fileName = Path.GetFileName(sourceFile);
-                
+        var fileName = Path.GetFileName(pSourceFile);
+        
         try
         {
-            Console.WriteLine($"Versuche folgende Datei zu konvertieren: {fileName}");
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceFile);
-            string outputFilePathWithEnding = Path.Combine(pOutputFile, $"{fileNameWithoutExtension}.{pFileEnding}");
-            pConverter.Convert(sourceFile, outputFilePathWithEnding);
-            Console.WriteLine($"Konvertierung der Datei war erfolgeich: {fileName}");
-            
+            Console.WriteLine(Language.Program_HandleFile_Trying_To_Convert_File_X, fileName);
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pSourceFile);
+            var outputFilePathWithEnding = Path.Combine(pOutputFile, $"{fileNameWithoutExtension}.{pFileEnding}");
+            pConverter.Convert(pSourceFile, outputFilePathWithEnding);
+            Console.WriteLine(Language.Program_HandleFile_Conversion_For_File_X_Was_Successful, fileName);
+
+            return true;
         }
         catch (Exception exception)
         {
-            Console.WriteLine($"Es ist ein Fehler beim Konvertieren aufgetreten: {exception.Message}");
+            Console.WriteLine(Language.Program_HandleFile_Error_While_Converting_File_X, exception.Message);
 
             if (!Directory.Exists(pErrorPath))
                 Directory.CreateDirectory(pErrorPath);
                     
-            string errorFilePath = Path.Combine(pErrorPath, fileName);
-            File.Move(sourceFile, errorFilePath, true);
+            var errorFilePath = Path.Combine(pErrorPath, fileName);
+            File.Move(pSourceFile, errorFilePath, true);
+
+            return false;
         }
     }
     
     private static void ValidateTargetFileEnding(string? pTargetFileEnding)
     {
         if (!string.IsNullOrWhiteSpace(pTargetFileEnding)) return;
-        Console.WriteLine("Das Zieldateiformat ist ungültig.");
+        Console.WriteLine(Language.Program_ValidateTargetFileEnding_Invalid);
         Console.ReadKey();
         Shutdown();
     }
@@ -101,7 +121,7 @@ public static class Program
     private static void ValidateSourceFileEnding(string? sourceFileEnding)
     {
         if (!string.IsNullOrWhiteSpace(sourceFileEnding)) return;
-        Console.WriteLine("Das Quelldateiformat ist ungültig.");
+        Console.WriteLine(Language.Program_ValidateSourceFileEnding_Invalid);
         Console.ReadKey();
         Shutdown();
     }
@@ -110,7 +130,7 @@ public static class Program
     {
         if (!string.IsNullOrWhiteSpace(targetFilePath) && Directory.Exists(targetFilePath)) return;
         
-        Console.WriteLine("Der Zielpfad ist ungültig.");
+        Console.WriteLine(Language.Program_ValidateTagetFilePath_Invalid);
         Console.ReadKey();
         Shutdown();
     }
@@ -120,7 +140,7 @@ public static class Program
         if (!string.IsNullOrWhiteSpace(inputFilePath) && Directory.Exists(inputFilePath))
             return;
         
-        Console.WriteLine("Der Quellpfad ist ungültig.");
+        Console.WriteLine(Language.Program_ValidateInputFilePath_Invalid);
         Console.ReadKey();
         Shutdown();
     }
@@ -128,9 +148,8 @@ public static class Program
     private static void Shutdown()
     {
         Console.WriteLine();
-        Console.WriteLine("Drücken Sie eine Taste um die Anwendung zu beenden..."); 
+        Console.WriteLine(Language.Program_Shutdown_Press_Any_Key_To_Exit); 
         Console.ReadKey();
-        const int defaultShutdownCode = 0;
-        Environment.Exit(defaultShutdownCode);
+        Environment.Exit(default);
     }
 }

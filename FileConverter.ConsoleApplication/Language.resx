@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Program_Main_Enter_Source_Path" xml:space="preserve">
+        <value>Bitte geben Sie den Quellpfad an: </value>
+    </data>
+    <data name="Program_Main_Enter_Destination_Path" xml:space="preserve">
+        <value>Bitte geben Sie den Zielpfad an: </value>
+    </data>
+    <data name="Program_Main_Enter_Source_File_Format" xml:space="preserve">
+        <value>Bitte geben Sie das Quelldateiformat an: </value>
+    </data>
+    <data name="Program_Main_Enter_Destination_File_Path" xml:space="preserve">
+        <value>Bitte geben Sie das Zieldateiformat an: </value>
+    </data>
+    <data name="Program_Main_Found_X_Files_For_X_File_Ending" xml:space="preserve">
+        <value>Es wurden {0} Dateien für die Dateiendung "{1}" gefunden.</value>
+    </data>
+    <data name="Program_Main_No_Files_Found" xml:space="preserve">
+        <value>Keine Dateien gefunden!</value>
+    </data>
+    <data name="Program_Main_Converted_X_Files" xml:space="preserve">
+        <value>Es wurden {0} Dateien abgearbeitet.</value>
+    </data>
+    <data name="Program_Main_Converted_X_Files_Successfully" xml:space="preserve">
+        <value>Es wurden {0} erfolgreich konvertiert.</value>
+    </data>
+    <data name="Program_Main_The_Conversion_Took_X_Milliseconds" xml:space="preserve">
+        <value>Die Konvertierung dauerte {0}ms.</value>
+    </data>
+    <data name="Program_Main_Error_While_Reading_File_X" xml:space="preserve">
+        <value>Es ist ein Fehler beim Lesen der Dateien aufgetreten: {0}</value>
+    </data>
+    <data name="Program_HandleFile_Trying_To_Convert_File_X" xml:space="preserve">
+        <value>Versuche folgende Datei zu konvertieren: {0}</value>
+    </data>
+    <data name="Program_HandleFile_Conversion_For_File_X_Was_Successful" xml:space="preserve">
+        <value>Konvertierung der Datei war erfolgeich: {0}</value>
+    </data>
+    <data name="Program_HandleFile_Error_While_Converting_File_X" xml:space="preserve">
+        <value>Es ist ein Fehler beim Konvertieren aufgetreten: {0}</value>
+    </data>
+    <data name="Program_ValidateTargetFileEnding_Invalid" xml:space="preserve">
+        <value>Das Zieldateiformat ist ungültig.</value>
+    </data>
+    <data name="Program_ValidateSourceFileEnding_Invalid" xml:space="preserve">
+        <value>Das Quelldateiformat ist ungültig.</value>
+    </data>
+    <data name="Program_ValidateTagetFilePath_Invalid" xml:space="preserve">
+        <value>Der Zielpfad ist ungültig.</value>
+    </data>
+    <data name="Program_ValidateInputFilePath_Invalid" xml:space="preserve">
+        <value>Der Quellpfad ist ungültig.</value>
+    </data>
+    <data name="Program_Shutdown_Press_Any_Key_To_Exit" xml:space="preserve">
+        <value>Drücken Sie eine Taste um die Anwendung zu beenden...</value>
+    </data>
+</root>

@@ -10,7 +10,7 @@ public class JpgToHeicConverter : IFileConverter
     
     public void Convert(string pInputFile, string pExportFile)
     {
-        using MagickImage image = new MagickImage(pInputFile);
+        using var image = new MagickImage(pInputFile);
         image.Format = MagickFormat.Heic;
         image.Write(pExportFile);
     }

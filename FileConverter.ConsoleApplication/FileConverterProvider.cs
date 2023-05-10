@@ -1,32 +1,30 @@
-﻿using FileConverter.Foundation;
+﻿using System.Reflection;
+using FileConverter.Foundation;
 
 namespace ImageConverter;
 
-public class FileConverterProvider
+public class FileConverterProvider : IFileConverterProvider
 {
-    private IEnumerable<IFileConverter>? _converters;
-    private IEnumerable<IFileConverter> Converters => _converters ??= GetConverter();
-
-    private IEnumerable<IFileConverter> GetConverter()
-    {
-        Type imageConverterType = typeof(IFileConverter);
-        
-        IEnumerable<Type> imageConverterTypes = imageConverterType.Assembly
-            .GetTypes()
-            .Where(pType => !pType.IsAbstract
-                            && pType.IsClass
-                            && imageConverterType.IsAssignableFrom(pType));
-
-        IEnumerable<IFileConverter> fileConverters = imageConverterTypes.Select(pType => (IFileConverter)Activator.CreateInstance(pType)!);
-
-        return fileConverters;
-    }
-
+    private readonly HashSet<IFileConverter> _converters = new();
+    
     public IFileConverter ByFileEndings(string pSourceFileEnding, string pTargetFileEnding)
     {
-        IFileConverter? fileConverter = Converters.SingleOrDefault(pConverter => string.Equals(pConverter.TargetFileEnding, pTargetFileEnding, StringComparison.CurrentCultureIgnoreCase) 
-            && string.Equals(pConverter.SourceFileEnding, pSourceFileEnding, StringComparison.CurrentCultureIgnoreCase));
+        var fileConverter = _converters.SingleOrDefault(pConverter => string.Equals(pConverter.TargetFileEnding, pTargetFileEnding, StringComparison.CurrentCultureIgnoreCase) 
+                                                                      && string.Equals(pConverter.SourceFileEnding, pSourceFileEnding, StringComparison.CurrentCultureIgnoreCase));
 
         return fileConverter ?? throw new NotSupportedException($"No converter found for file ending: {pTargetFileEnding}");
+    }
+
+    public void AddFromAssembly(Assembly pAssembly)
+    {
+        IEnumerable<Type> fileConverterTypes = pAssembly
+            .GetTypes()
+            .Where(pType => pType.IsFileConverter());
+
+        IEnumerable<IFileConverter> fileConverterInstances = fileConverterTypes
+            .Select(pType => (IFileConverter)Activator.CreateInstance(pType)!);
+
+        foreach (var instance in fileConverterInstances) 
+            _converters.Add(instance);
     }
 }
