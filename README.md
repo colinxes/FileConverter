@@ -1,2 +1,5 @@
-# ImageConverter
- A quick and dirty tool written in less than 20 minutes.
+# File converter
+ A quick extensibile tool written tool in less than 40 minutes.
+ 
+ ~25 Minutes project structuring
+ ~15 Minutes implementation
